@@ -1,36 +1,41 @@
 const productList = document.querySelector('#products');
 const addProductForm = document.querySelector('#add-product-form');
+
+// Referências aos novos elementos do formulário de UPDATE no HTML
 const updateProductForm = document.querySelector('#update-product-form');
 const updateProductId = document.querySelector('#update-id');
 const updateProductName = document.querySelector('#update-name');
 const updateProductPrice = document.querySelector('#update-price');
 
-// Function to fetch all products from the server
+// --- READ (Lê todos os produtos) ---
 async function fetchProducts() {
   const response = await fetch('http://localhost:3000/products');
   const products = await response.json();
 
-  // Clear product list
+  // Limpa a lista de produtos
   productList.innerHTML = '';
 
-  // Add each product to the list
+  // Adiciona cada produto à lista
   products.forEach(product => {
     const li = document.createElement('li');
-    li.innerHTML = `${product.name} - $${product.price}`;
+    // Formata o preço para duas casas decimais, caso seja necessário
+    const formattedPrice = parseFloat(product.price).toFixed(2); 
+    li.innerHTML = `${product.name} - R$${formattedPrice}`;
 
-    // Add delete button for each product
+    // Adiciona botão DELETE
     const deleteButton = document.createElement('button');
     deleteButton.innerHTML = 'Delete';
     deleteButton.addEventListener('click', async () => {
       await deleteProduct(product.id);
-      await fetchProducts();
+      await fetchProducts(); // Recarrega a lista
     });
     li.appendChild(deleteButton);
 
-    // Add update button for each product
+    // Adiciona botão UPDATE (preenche o formulário de atualização)
     const updateButton = document.createElement('button');
     updateButton.innerHTML = 'Update';
     updateButton.addEventListener('click', () => {
+      // Preenche o formulário de atualização com os dados do produto
       updateProductId.value = product.id;
       updateProductName.value = product.name;
       updateProductPrice.value = product.price;
@@ -41,18 +46,7 @@ async function fetchProducts() {
   });
 }
 
-
-// Event listener for Add Product form submit button
-addProductForm.addEventListener('submit', async event => {
-  event.preventDefault();
-  const name = addProductForm.elements['name'].value;
-  const price = addProductForm.elements['price'].value;
-  await addProduct(name, price);
-  addProductForm.reset();
-  await fetchProducts();
-});
-
-// Function to add a new product
+// --- CREATE (Adiciona um novo produto) ---
 async function addProduct(name, price) {
   const response = await fetch('http://localhost:3000/products', {
     method: 'POST',
@@ -64,17 +58,63 @@ async function addProduct(name, price) {
   return response.json();
 }
 
-// Function to delete a new product
+// Event listener para o formulário de Adicionar Produto
+addProductForm.addEventListener('submit', async event => {
+  event.preventDefault();
+  const name = addProductForm.elements['name'].value;
+  // Converte a string do preço para um número decimal (float) antes de enviar
+  const price = parseFloat(addProductForm.elements['price'].value); 
+  
+  await addProduct(name, price);
+  addProductForm.reset();
+  await fetchProducts(); // Recarrega a lista após adicionar
+});
+
+// --- UPDATE (Atualiza um produto existente) ---
+// Função NOVA: Envia o ID e os novos dados via método PUT
+async function updateProduct(id, name, price) {
+  const response = await fetch(`http://localhost:3000/products/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ name, price }) // Envia o nome e preço atualizados
+  });
+  return response.json();
+}
+
+// Event listener para o formulário de Atualizar Produto (NOVO)
+updateProductForm.addEventListener('submit', async event => {
+  event.preventDefault();
+  
+  // Captura os valores atuais dos inputs de atualização
+  const id = updateProductId.value; 
+  const name = updateProductName.value;
+  // Converte o preço para número decimal (float)
+  const price = parseFloat(updateProductPrice.value);
+  
+  // Verifica se o ID está presente (se o formulário foi preenchido corretamente)
+  if (!id) {
+    alert("Nenhum produto selecionado para atualização!");
+    return;
+  }
+
+  await updateProduct(id, name, price);
+  updateProductForm.reset(); // Limpa o formulário após a submissão
+  await fetchProducts(); // Recarrega a lista para mostrar a mudança
+});
+
+
+// --- DELETE (Remove um produto) ---
 async function deleteProduct(id) {
   const response = await fetch('http://localhost:3000/products/' + id, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json'
     },
-    //body: JSON.stringify({id})
   });
   return response.json();
 }
 
-// Fetch all products on page load
+// Fetch all products on page load (Inicia a aplicação lendo os dados)
 fetchProducts();
