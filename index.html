@@ -7,11 +7,15 @@
 <body>
   <h1>Product CRUD</h1>
 
+  <!-- ADD PRODUCT -->
   <form id="add-product-form">
     <h2>Add Product</h2>
     
     <label for="name">Name:</label>
     <input type="text" id="name" name="name" required>
+
+    <label for="description">Description:</label>
+    <textarea id="description" name="description" required></textarea>
     
     <label for="price">Price:</label>
     <input type="number" id="price" name="price" required step="0.01">
@@ -21,29 +25,30 @@
 
   <hr> 
   
+  <!-- UPDATE PRODUCT -->
   <form id="update-product-form">
     <h2>Update Product</h2>
     
-    <input type="hidden" id="update-id" name="id"> 
+    <input type="hidden" id="update-id">
 
     <label for="update-name">Name:</label>
-    <input type="text" id="update-name" name="name" required>
+    <input type="text" id="update-name" required>
+
+    <label for="update-description">Description:</label>
+    <textarea id="update-description" required></textarea>
 
     <label for="update-price">Price:</label>
-    <input type="number" id="update-price" name="price" required step="0.01">
+    <input type="number" id="update-price" required step="0.01">
     
     <button type="submit">Save Changes</button>
   </form>
-  
+
   <hr>
 
   <ul id="products"></ul>
 
   <script src="app.js"></script>
   <script>
-    // Chama fetchProducts() quando a página carregar.
-    // Esta linha é redundante se você já chama fetchProducts() no final do app.js, 
-    // mas garante que a lista seja carregada.
     window.addEventListener('load', fetchProducts);
   </script>
 </body>
