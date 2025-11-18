@@ -30,7 +30,7 @@ async function fetchProducts() {
 
     // DELETE
     const deleteButton = document.createElement('button');
-    deleteButton.innerHTML = 'Delete';
+    deleteButton.innerHTML = 'Excluir';
     deleteButton.addEventListener('click', async () => {
       await deleteProduct(product.id);
       await fetchProducts(); 
@@ -39,7 +39,7 @@ async function fetchProducts() {
 
     // UPDATE
     const updateButton = document.createElement('button');
-    updateButton.innerHTML = 'Update';
+    updateButton.innerHTML = 'Atualizar';
     updateButton.addEventListener('click', () => {
       updateProductId.value = product.id;
       updateProductName.value = product.name;

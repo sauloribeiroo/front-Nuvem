@@ -1,46 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Product CRUD</title>
+  <title>Trabalho Nuvem</title>
   <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-  <h1>Product CRUD</h1>
+  <h1>CRUD de Produtos</h1>
 
   <!-- ADD PRODUCT -->
   <form id="add-product-form">
-    <h2>Add Product</h2>
+    <h2>Adicionar Produto</h2>
     
-    <label for="name">Name:</label>
+    <label for="name">Nome:</label>
     <input type="text" id="name" name="name" required>
 
-    <label for="description">Description:</label>
+    <label for="description">Descrição:</label>
     <textarea id="description" name="description" required></textarea>
     
-    <label for="price">Price:</label>
+    <label for="price">Preço:</label>
     <input type="number" id="price" name="price" required step="0.01">
     
-    <button type="submit">Add</button>
+    <button type="submit">Adicionar</button>
   </form>
 
   <hr> 
   
   <!-- UPDATE PRODUCT -->
   <form id="update-product-form">
-    <h2>Update Product</h2>
+    <h2>Atualizar Produto</h2>
     
     <input type="hidden" id="update-id">
 
-    <label for="update-name">Name:</label>
+    <label for="update-name">Nome:</label>
     <input type="text" id="update-name" required>
 
-    <label for="update-description">Description:</label>
+    <label for="update-description">Descrição:</label>
     <textarea id="update-description" required></textarea>
 
-    <label for="update-price">Price:</label>
+    <label for="update-price">Preço:</label>
     <input type="number" id="update-price" required step="0.01">
     
-    <button type="submit">Save Changes</button>
+    <button type="submit">Salvar alterações</button>
   </form>
 
   <hr>
